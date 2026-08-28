@@ -99,7 +99,7 @@
       <span class="separator" aria-hidden="true"></span>
       <button class="toggle active-house" id="toggle-house" type="button" aria-pressed="true">House boundaries</button>
       <button class="toggle active-senate" id="toggle-senate" type="button" aria-pressed="true">Senate boundaries</button>
-      <button class="btn" id="reset" type="button">View all Delaware</button>
+      <button class="btn" id="reset" type="button">View all of Delaware</button>
       <div class="map-key"><span><i class="line-key"></i>House</span><span><i class="line-key senate"></i>Senate</span></div>
     </div>
 
@@ -127,7 +127,7 @@
         <div class="privacy">Location permission is optional and requested only after pressing “Use my location.” Street-map tiles are provided by OpenStreetMap. For an official personalized sample ballot, verify through Delaware’s voter portal.</div>
       </aside>
     </section>
-    <footer><p>Candidate sources: Delaware Department of Elections <a href="https://elections.delaware.gov/candidates/candidatelist/prim_fcddt_2026.html" target="_blank" rel="noreferrer">primary list</a> and <a href="https://elections.delaware.gov/candidates/candidatelist/genl_fcddt_2026.html" target="_blank" rel="noreferrer">general-election list</a>. Withdrawn candidates are excluded. Boundaries: U.S. Census Bureau 2024 State Legislative Districts, clipped to Census water boundaries. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. This interactive map was built by ChatGPT with editorial direction from Spotlight Delaware.</p></footer>
+    <footer><p>Candidate sources: Delaware Department of Elections <a href="https://elections.delaware.gov/candidates/candidatelist/prim_fcddt_2026.html" target="_blank" rel="noreferrer">primary list</a> and <a href="https://elections.delaware.gov/candidates/candidatelist/genl_fcddt_2026.html" target="_blank" rel="noreferrer">general-election list</a>. Withdrawn candidates are excluded. Boundaries: U.S. Census Bureau 2024 State Legislative Districts, clipped to Census water boundaries. Light-gray basemap © <a href="https://www.esri.com/en-us/legal/terms/data-attributions" target="_blank" rel="noreferrer">Esri and its data contributors</a>. This interactive map was built by ChatGPT with editorial direction from Spotlight Delaware.</p></footer>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -150,7 +150,9 @@
     const DELAWARE_BOUNDS = L.latLngBounds([38.43,-75.80],[39.85,-75.03]);
     const state = { point:null, house:null, senate:null, view:'Current', party:'Democratic', houseVisible:true, senateVisible:true };
     const map = L.map('map',{zoomControl:true,minZoom:7,maxZoom:19,maxBounds:L.latLngBounds([38.05,-76.25],[40.15,-74.55]),maxBoundsViscosity:.72}).fitBounds(DELAWARE_BOUNDS,{padding:[14,14]});
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles &copy; Esri &mdash; Esri, TomTom, Garmin, FAO, NOAA, USGS, OpenStreetMap contributors, and the GIS User Community'}).addTo(map);
+    map.createPane('labelsPane'); map.getPane('labelsPane').style.zIndex=425; map.getPane('labelsPane').style.pointerEvents='none';
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{pane:'labelsPane',maxZoom:19}).addTo(map);
     L.control.scale({imperial:true,metric:false}).addTo(map);
     map.createPane('housePane'); map.getPane('housePane').style.zIndex=410;
     map.createPane('senatePane'); map.getPane('senatePane').style.zIndex=420;
